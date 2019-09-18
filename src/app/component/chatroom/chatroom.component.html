@@ -1,0 +1,11 @@
+<form [formGroup]="idForm" (ngSubmit)="setId(idForm.value)">
+  <label for="id" *ngIf="!id">ID:</label>
+  <input id="id" *ngIf="!id" type="text" formControlName="id">
+  <button type="submit">set Id</button>
+</form>
+<div *ngIf="id">{{id}}</div>
+<form [formGroup]="messageForm" (ngSubmit)="sendMessage(messageForm.value)">
+  <label for="message">Message :</label>
+  <input id="message"  type="text" formControlName="message">
+  <button type="submit">Send Message</button>
+</form>
