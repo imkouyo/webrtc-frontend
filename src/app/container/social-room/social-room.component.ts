@@ -17,7 +17,7 @@ export class SocialRoomComponent implements OnInit, AfterViewInit {
   constraints = { audio: false, video: true};
   stream: MediaStream;
   streamList;
-
+  remotestream;
   constructor(private dialog: MatDialog,
               private http: HttpClient,
               private webRtcService: WebRTCService) { }
@@ -27,9 +27,15 @@ export class SocialRoomComponent implements OnInit, AfterViewInit {
     this.http.get('stream-list').subscribe(value => {
       this.streamList = value;
     });
+    this.webRtcService.remoteStream.subscribe(
+      v => {
+        console.log(v, 'stream get')
+        this.videoRef.nativeElement.srcObject = v;
+        this.videoRef.nativeElement.play();
+      }
+    );
   }
   ngAfterViewInit(): void {
-
   }
 
   public openDialog() {
@@ -39,19 +45,21 @@ export class SocialRoomComponent implements OnInit, AfterViewInit {
 
     dialogRef.afterClosed().pipe(switchMap((result) => {
 
-     return this.webRtcService.send({...result , type: 'init-broadcast', id: this.uuid()});
+     return this.webRtcService.send({...result , type: 'init-broadcast'});
     })).subscribe(_ => {
-      this.webRtcService.broadcastFlow(this.stream);
+
     });
+    this.webRtcService.broadcastFlow(this.stream).then();
   }
 
   private async streamInit() {
     this.stream = await navigator.mediaDevices.getUserMedia(this.constraints);
-    this.videoRef.nativeElement.srcObject = this.stream;
+    // this.videoRef.nativeElement.srcObject = this.stream;
   }
 
   private gotRemoteStream() {
-    // this.webRtcService.clientFlow();
+    console.log('click')
+    this.webRtcService.clientFlow();
   }
   public uuid() {
     function s4() {
