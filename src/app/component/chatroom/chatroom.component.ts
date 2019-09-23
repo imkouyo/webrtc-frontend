@@ -12,8 +12,9 @@ export class ChatroomComponent implements OnInit {
   id: string;
   idForm: FormGroup;
   messageForm: FormGroup;
-  constructor(private webSocketService: WebsocketService,
-              private formBuilder: FormBuilder) {
+  webSocketService: WebsocketService;
+  constructor(private formBuilder: FormBuilder) {
+    this.webSocketService = new WebsocketService();
     this.idForm = formBuilder.group({
       id: '',
     });
@@ -23,13 +24,14 @@ export class ChatroomComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.webSocketService.createChatRoom();
     this.webSocketService.socket.subscribe(message => console.log(message));
   }
 
   public sendMessage(data) {
     console.log(data);
 
-    this.webSocketService.send({id: this.id, message: data.message});
+    // this.webSocketService.send({id: this.id, message: data.message});
   }
   public setId(event) {
     console.log(event);

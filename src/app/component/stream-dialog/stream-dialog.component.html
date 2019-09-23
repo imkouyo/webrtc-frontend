@@ -1,0 +1,16 @@
+<div class="dialog-layout">
+  <h1 mat-dialog-title>Hi {{data.name}}</h1>
+  <div class="dialog-content" mat-dialog-content>
+    <p>Do you want to start broadcaster?</p>
+    <mat-form-field>
+      <input matInput [(ngModel)]="data.name" placeholder="Name">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput [(ngModel)]="data.description" placeholder="Description">
+    </mat-form-field>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">No Thanks</button>
+    <button mat-button [mat-dialog-close]="data">Ok</button>
+  </div>
+</div>
